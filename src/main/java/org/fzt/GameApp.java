@@ -7,49 +7,38 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import java.util.Map;
-
 public class GameApp extends GameApplication {
+    public static final String version = "0.0.1";
+
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setTitle("Forgotten Ziggurat of Tutel");
-        settings.setVersion("0.1");
+        settings.setVersion(version);
         settings.setWidth(400);
         settings.setHeight(300);
-        settings.setManualResizeEnabled(true);
-        settings.setFullScreenAllowed(true);
         settings.setDefaultCursor(new CursorInfo("breeze-cursor-32.png", 10, 5));
     }
 
     @Override
     protected void initInput() {
         FXGL.onKey(KeyCode.D, () -> {
-            player.translateX(5); // move right 5 pixels
-            FXGL.inc("pixelsMoved", +5);
+            player.translateX(5);
         });
 
         FXGL.onKey(KeyCode.A, () -> {
-            player.translateX(-5); // move left 5 pixels
-            FXGL.inc("pixelsMoved", -5);
+            player.translateX(-5);
         });
 
         FXGL.onKey(KeyCode.W, () -> {
-            player.translateY(-5); // move up 5 pixels
-            FXGL.inc("pixelsMoved", +5);
+            player.translateY(-5);
         });
 
         FXGL.onKey(KeyCode.S, () -> {
-            player.translateY(5); // move down 5 pixels
-            FXGL.inc("pixelsMoved", +5);
+            player.translateY(5);
         });
-    }
-
-    @Override
-    protected void initGameVars(Map<String, Object> vars) {
-        vars.put("pixelsMoved", 0);
     }
 
     private Entity player;
@@ -58,20 +47,21 @@ public class GameApp extends GameApplication {
     protected void initGame() {
         player = FXGL.entityBuilder()
                 .at(100, 100)
-                .view(new Rectangle(25, 25, Color.BLUE))
+                .view(FXGL.getAssetLoader().loadTexture("tutel.png", 128, 128))
                 .buildAndAttach();
+        FXGL.getGameScene().setBackgroundColor(Color.MIDNIGHTBLUE);
     }
 
     @Override
     protected void initUI() {
-        // "x: " text
-        var textX = new Text(15, 30, null);
-        textX.textProperty().bind(player.xProperty().asString("x: %.0f"));
-        FXGL.getGameScene().addUINode(textX);
-        // "y: " text
-        var textY = new Text(15, 40, null);
-        textY.textProperty().bind(player.yProperty().asString("y: %.0f"));
-        FXGL.getGameScene().addUINode(textY);
+        var name = new Text(150, 30, "тутәл");
+        name.setFont(new Font(22));
+        name.setFill(Color.LIGHTGREEN);
+        FXGL.getGameScene().addUINode(name);
+        var question = new Text( 90, 240,"зиккурат қайда???");
+        question.setFont(new Font(25));
+        question.setFill(Color.RED);
+        FXGL.getGameScene().addUINode(question);
     }
 
     public static void main(String[] args) {
