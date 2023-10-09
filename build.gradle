@@ -1,0 +1,25 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+group = 'org.fzt'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+application {
+//    mainModule = 'org.fzt'
+    mainClass = 'org.fzt.GameApp'
+}
+
+dependencies {
+    implementation 'com.github.almasb:fxgl:17.3'
+}
+
+javafx {
+//    version = "18"
+    modules = [ 'javafx.controls', 'javafx.graphics', 'javafx.fxml', 'javafx.media' ]
+}
