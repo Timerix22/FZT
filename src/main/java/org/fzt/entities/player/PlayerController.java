@@ -1,31 +1,31 @@
-package org.fzt;
+package org.fzt.entities.player;
 
 import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.entity.component.Component;
-import com.almasb.fxgl.inventory.Inventory;
 import com.almasb.fxgl.physics.PhysicsComponent;
 
+/**
+ * Defines player movement and other interactions with the world
+ */
 public class PlayerController extends Component {
-    public PlayerStats stats = new PlayerStats();
-
-    public Inventory<Item> inventory = new Inventory<>(16);
-    public IWeapon equippedWeapon;
 
     public PhysicsComponent physics;
+    public Player player;
     
-    public PlayerController(PhysicsComponent playerPhysics) {
+    public PlayerController(Player p, PhysicsComponent playerPhysics) {
         super();
+        player = p;
         physics = playerPhysics;
     }
 
     public void attack(Vec2 destination){
-        equippedWeapon.attack(destination);
+        player.equippedWeapon.attack(destination);
     }
 
     static final float base_speed = 5;
 
     float speedWithStats(){
-        return base_speed * ( 1 + stats.dexterity / 100 + stats.strength / 400);
+        return base_speed * ( 1 + player.getStats().dexterity / 100 + player.getStats().strength / 400);
     }
 
     // m/s

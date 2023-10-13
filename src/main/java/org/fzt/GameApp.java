@@ -4,12 +4,17 @@ import com.almasb.fxgl.app.ApplicationMode;
 import com.almasb.fxgl.app.CursorInfo;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
+import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import org.fzt.entities.Entities;
+import org.fzt.entities.player.PlayerController;
 
+/**
+ * Main class with entry point and game logic
+ */
 public class GameApp extends GameApplication {
     public static final String version = "0.0.1";
 
@@ -59,13 +64,13 @@ public class GameApp extends GameApplication {
 
         scene.setBackgroundColor(Color.BLACK);
 
-        player = EntityFactory.spawnPlayer(new Vec2(0, 0));
+        player = Entities.spawnPlayer(new Point2D(0, 0));
         playerController = player.getComponent(PlayerController.class);
 
         viewport.bindToEntity(player, viewport.getWidth()/2, viewport.getHeight()/2);
 
         for(int x=0; x<viewport.getWidth(); x+=128){
-            EntityFactory.spawnWall(new Vec2(x, 200));
+            Entities.spawnWall(new Point2D(x, 200), "wall.png");
         }
     }
 
