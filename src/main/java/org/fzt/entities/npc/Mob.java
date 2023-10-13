@@ -6,7 +6,10 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyDef;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import org.fzt.Assets;
-import org.fzt.entities.*;
+import org.fzt.entities.EntityType;
+import org.fzt.entities.MortalEntity;
+import org.fzt.entities.Physical;
+import org.fzt.entities.SurfaceFriction;
 
 public abstract class Mob extends MortalEntity implements NPC, Physical {
     public Mob(String texture, HitBox hitBox) {
@@ -15,6 +18,7 @@ public abstract class Mob extends MortalEntity implements NPC, Physical {
         addComponent(getAI());
         addComponent(new CollidableComponent(true));
         addComponent(_physics);
+        addComponent(new SurfaceFriction(_physics));
         getViewComponent().addChild(Assets.loadTexture64(texture));
         getBoundingBoxComponent().addHitBox(hitBox);
     }

@@ -29,7 +29,9 @@ public class DefaultWeapon implements Weapon {
             return;
 
         lastShotTime = now;
-        var projectile = new Projectile(Assets.loadTexture("default_projectile.png", 40, 40), new HitBox(BoundingShape.circle(20f))){
+        var projectile = new Projectile(
+                Assets.loadTexture("default_projectile.png", 40, 40),
+                new HitBox(BoundingShape.circle(20f))){
             @Override
             public float getBaseDamage() {return 10;}
         };

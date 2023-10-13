@@ -86,6 +86,12 @@ public class GameApp extends GameApplication {
     protected void initPhysics() {
         var physics = FXGL.getPhysicsWorld();
         physics.setGravity(0, 0);
+        physics.addCollisionHandler(new CollisionHandler(EntityType.PROJECTILE, EntityType.WALL) {
+            @Override
+            protected void onCollisionBegin(Entity _prj, Entity _wall) {
+                _prj.removeFromWorld();
+            }
+        });
         physics.addCollisionHandler(new CollisionHandler(EntityType.PROJECTILE, EntityType.NPC) {
             @Override
             protected void onCollisionBegin(Entity _prj, Entity _npc) {
