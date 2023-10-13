@@ -5,5 +5,7 @@ package org.fzt.entities;
  */
 public enum EntityType {
     PLAYER,
-    WALL
+    NPC,
+    WALL,
+    PROJECTILE
 }

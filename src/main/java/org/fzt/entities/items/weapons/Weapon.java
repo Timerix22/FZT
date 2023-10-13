@@ -1,8 +1,8 @@
 package org.fzt.entities.items.weapons;
 
-import com.almasb.fxgl.core.math.Vec2;
+import javafx.geometry.Point2D;
 import org.fzt.entities.items.Item;
 
 public interface Weapon extends Item {
-    void attack(Vec2 destination);
+    void attack(Point2D pos, Point2D destination);
 }

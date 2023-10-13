@@ -11,17 +11,17 @@ import org.fzt.entities.player.Player;
  * Contains functions to deal with entities
  */
 public class Entities {
-    public static Entity spawnEntity(Entity e, Point2D pos) {
+    public static Entity spawnEntity(Point2D pos, Entity e) {
         e.setPosition(pos);
         FXGL.getGameWorld().addEntity(e);
         return e;
     }
     
     public static Entity spawnPlayer(Point2D pos){
-        return spawnEntity(new Player(), pos);
+        return spawnEntity(pos, new Player());
     }
 
     public static Entity spawnWall(Point2D pos, String texture){
-        return spawnEntity(new Wall(Assets.loadTexture64(texture)), pos);
+        return spawnEntity(pos, new Wall(Assets.loadTexture64(texture)));
     }
 }
