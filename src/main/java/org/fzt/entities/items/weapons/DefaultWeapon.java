@@ -5,15 +5,15 @@ import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 import org.fzt.Assets;
 import org.fzt.entities.Entities;
-import org.fzt.entities.player.PlayerStats;
+import org.fzt.entities.CharacterStats;
 import org.jetbrains.annotations.NotNull;
 
 public class DefaultWeapon implements Weapon {
 
     @NotNull
     @Override
-    public PlayerStats getStats() {
-        return new PlayerStats();
+    public CharacterStats getStats() {
+        return new CharacterStats();
     }
 
     // it will not work if < then 1/fps

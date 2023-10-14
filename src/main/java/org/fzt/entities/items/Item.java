@@ -1,9 +1,9 @@
 package org.fzt.entities.items;
 
-import org.fzt.entities.player.PlayerStats;
+import org.fzt.entities.CharacterStats;
 import org.jetbrains.annotations.NotNull;
 
 public interface Item {
     @NotNull
-    PlayerStats getStats();
+    CharacterStats getStats();
 }

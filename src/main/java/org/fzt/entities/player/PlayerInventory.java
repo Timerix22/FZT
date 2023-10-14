@@ -1,5 +1,6 @@
 package org.fzt.entities.player;
 
+import org.fzt.entities.CharacterStats;
 import org.fzt.entities.items.Item;
 
 import java.util.ArrayList;
@@ -14,8 +15,8 @@ public class PlayerInventory {
         items = new ArrayList<>(capacity);
     }
 
-    public PlayerStats getStatsSum() {
-        return PlayerStats.sum(items);
+    public CharacterStats getStatsSum() {
+        return CharacterStats.sum(items);
     }
 
     public class InventoryFullException extends Exception {

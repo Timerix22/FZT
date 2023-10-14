@@ -3,12 +3,7 @@ package org.fzt.entities;
 import com.almasb.fxgl.entity.Entity;
 
 public abstract class MortalEntity extends Entity implements Mortal {
-
-    // must be in constructor because getMaxHP uses getStats which needs player fields to be initialized
     float _hp = getMaxHP();
-
-    protected MortalEntity() {
-    }
 
     @Override
     public float getHP() {

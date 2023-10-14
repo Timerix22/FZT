@@ -3,7 +3,7 @@ package org.fzt.entities;
 import com.almasb.fxgl.entity.component.Component;
 
 /**
- * Removes entity from the world if it lifetime ends
+ * Removes entity from the world if it's lifetime ends
  */
 public class LifetimeComponent extends Component {
     final double _lifetime;

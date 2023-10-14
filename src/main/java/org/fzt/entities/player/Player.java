@@ -7,18 +7,17 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import javafx.geometry.Point2D;
 import org.fzt.Assets;
+import org.fzt.entities.CharacterEntity;
+import org.fzt.entities.CharacterStats;
 import org.fzt.entities.EntityType;
-import org.fzt.entities.MortalEntity;
 import org.fzt.entities.items.weapons.DefaultWeapon;
 import org.fzt.entities.items.weapons.Weapon;
 import org.fzt.entities.physics.Physical;
 import org.fzt.entities.physics.PhysicsComponentBuilder;
 import org.jetbrains.annotations.Nullable;
 
-public class Player extends MortalEntity implements Physical {
+public class Player extends CharacterEntity implements Physical {
     private final PhysicsComponent _physics = createPhysics();
-
-    public PlayerStats base_stats = new PlayerStats(1, 1, 1, 0);
 
     @Nullable
     public Weapon equippedWeapon = new DefaultWeapon();
@@ -26,7 +25,7 @@ public class Player extends MortalEntity implements Physical {
     public PlayerInventory inventory = new PlayerInventory(16);
 
     public Player() {
-        super();
+        super(new CharacterStats());
         setType(EntityType.PLAYER);
         getViewComponent().addChild(Assets.loadTexture64("player.png"));
         // hitbox smaller than tile size to be able to go through 64px holes
@@ -46,28 +45,28 @@ public class Player extends MortalEntity implements Physical {
     }
 
     @Override
-    public PhysicsComponent getPhysics() { return _physics; }
-
-    public PlayerStats getStats() {
-        // sometimes equippedWeapon is null
-        if (equippedWeapon != null) {
-            return PlayerStats.sum(base_stats, equippedWeapon.getStats(), inventory.getStatsSum() );
-        }
-        return PlayerStats.sum(base_stats, inventory.getStatsSum() );
+    public PhysicsComponent getPhysics() {
+        return _physics;
     }
 
     @Override
-    public float getMaxHP(){
-        // when player spawns MortalEntity initializes before base_stats and inventory,
-        // so getMaxHP has to return 0 to not cause NullPointerException in getStats()
-        if(base_stats == null || inventory == null)
-            return 0;
-        var s = getStats();
-        return 100 * (s.constitution / 100 + s.strength / 400);
+    public CharacterStats getStats() {
+        // when getStats() is called during super class initialization, Player fields are all null
+        if (inventory == null)
+            return CharacterStats.sum(getBaseStats());
+
+        // equippedWeapon is null when no weapon is equipped
+        if(equippedWeapon == null)
+            return CharacterStats.sum(getBaseStats(), inventory.getStatsSum());
+
+        return CharacterStats.sum(getBaseStats(), equippedWeapon.getStats(), inventory.getStatsSum());
     }
+
 
     /**
      * @return point where player projectiles should spawn
      */
-    public Point2D getWeaponPos() { return getCenter(); }
+    public Point2D getWeaponPos() {
+        return getCenter();
+    }
 }
