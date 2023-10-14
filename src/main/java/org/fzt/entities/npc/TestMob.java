@@ -3,6 +3,7 @@ package org.fzt.entities.npc;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
+import org.fzt.Assets;
 import org.jetbrains.annotations.Nullable;
 
 public class TestMob extends Mob {
@@ -11,8 +12,8 @@ public class TestMob extends Mob {
     float speed = 3*64;
 
     public TestMob() {
-        super("tutel.png", new HitBox(BoundingShape.box(64, 64)));
-
+        super(Assets.loadTexture64("tutel.png"),
+            new HitBox(BoundingShape.box(64, 64)));
     }
 
     @Override
@@ -37,13 +38,11 @@ public class TestMob extends Mob {
 
                     Point2D targetVector = _targetPoint.subtract(getPosition());
                     if(targetVector.magnitude() < 2f) {
-                        System.out.println("removing _targetPoint");
                         stopMoving();
                         return;
                     }
                     var velocity = targetVector.normalize().multiply(speed);
                     getPhysics().setLinearVelocity(velocity);
-//                    System.out.println("ai requested velocity: "+velocity.magnitude());
                 }
 
                 @Override

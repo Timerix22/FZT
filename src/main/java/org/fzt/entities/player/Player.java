@@ -4,16 +4,15 @@ import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
-import com.almasb.fxgl.physics.box2d.dynamics.BodyDef;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
-import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
 import javafx.geometry.Point2D;
 import org.fzt.Assets;
 import org.fzt.entities.EntityType;
 import org.fzt.entities.MortalEntity;
-import org.fzt.entities.Physical;
 import org.fzt.entities.items.weapons.DefaultWeapon;
 import org.fzt.entities.items.weapons.Weapon;
+import org.fzt.entities.physics.Physical;
+import org.fzt.entities.physics.PhysicsComponentBuilder;
 import org.jetbrains.annotations.Nullable;
 
 public class Player extends MortalEntity implements Physical {
@@ -38,13 +37,12 @@ public class Player extends MortalEntity implements Physical {
     }
 
     public PhysicsComponent createPhysics() {
-        var ph = new PhysicsComponent();
-        ph.setFixtureDef(new FixtureDef().friction(0).density(0.1f));
-        var bd = new BodyDef();
-        bd.setFixedRotation(true);
-        bd.setType(BodyType.DYNAMIC);
-        ph.setBodyDef(bd);
-        return ph;
+        return new PhysicsComponentBuilder()
+                .fixedRotation()
+                .type(BodyType.DYNAMIC)
+                .wallFriction(0)
+                .density(40f)
+                .build();
     }
 
     @Override

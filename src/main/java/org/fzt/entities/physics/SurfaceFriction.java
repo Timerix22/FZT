@@ -1,4 +1,4 @@
-package org.fzt.entities;
+package org.fzt.entities.physics;
 
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
