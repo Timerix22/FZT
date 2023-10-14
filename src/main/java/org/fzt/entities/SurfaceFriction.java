@@ -10,15 +10,11 @@ import javafx.geometry.Point2D;
  */
 public class SurfaceFriction extends Component {
     final static float g = 9.81f;
-    final static float v_min = 0.01f;
+    final static float v_min = 0.3f;
     //TODO dynamically set friction coefficient on surface change
-    float u = 1f;
+    float u = 3f;
     final PhysicsComponent physics;
 
-    /**
-     * @param coefficient friction coefficient (should be 100 or more
-     * @param physics
-     */
     public SurfaceFriction(PhysicsComponent physics){
         super();
         this.physics = physics;
@@ -31,19 +27,27 @@ public class SurfaceFriction extends Component {
         if(u == 0)
             return;
 
-        var v = physics.getLinearVelocity();
-        double vX = v.getX();
-        double vY = v.getY();
-        // just stops the body if it is moving too slow
-        if(vX < v_min && vY < v_min) {
-            physics.setLinearVelocity(new Point2D(0, 0));
-            return;
-        }
+        final Point2D v0 = physics.getLinearVelocity();
+        final double v0_magnitude = v0.magnitude();
 
-        var m = physics.getBody().getMass();
-        var direction = new Point2D(-vX, -vY).normalize();
-        // F=u*m*g directed against velocity
-        var frictionForce = direction.multiply(u*m*g);
-        physics.applyForceToCenter(frictionForce);
+        // doesn't need to calculate friction if the body isn't moving
+        if(v0_magnitude == 0)
+            return;
+
+        Point2D v1 = Point2D.ZERO;
+        // just stops the body if it is moving too slow
+        if(v0_magnitude >= v_min) {
+            // F=u*m*g directed against velocity
+            // a=F/m=u*g
+            // vf=a*t  friction velocity
+            // v1=v0-vf
+            var vf_magnitude = u * g * tpf;
+            var vf = v0.normalize().multiply(vf_magnitude);
+            // if friction > v0Magnitude the body will accelerate in the opposite direction, (|v1| = |v0 - vf| > 0)
+            // then negate gained velocity by friction and again accelerate by it infinitely
+            if (vf_magnitude < v0_magnitude)
+                v1 = v0.subtract(vf);
+        }
+        physics.setLinearVelocity(v1);
     }
 }
