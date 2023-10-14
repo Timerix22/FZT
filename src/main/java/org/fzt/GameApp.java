@@ -6,17 +6,14 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.physics.BoundingShape;
 import com.almasb.fxgl.physics.CollisionHandler;
-import com.almasb.fxgl.physics.HitBox;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 import org.fzt.entities.Entities;
 import org.fzt.entities.EntityType;
 import org.fzt.entities.items.weapons.Projectile;
-import org.fzt.entities.npc.AIComponent;
-import org.fzt.entities.npc.Mob;
 import org.fzt.entities.npc.NPC;
+import org.fzt.entities.npc.TestMob;
 import org.fzt.entities.player.Player;
 import org.fzt.entities.player.PlayerController;
 
@@ -30,10 +27,8 @@ public class GameApp extends GameApplication {
     protected void initSettings(GameSettings settings) {
         settings.setTitle("Forgotten Ziggurat of Tutel");
         settings.setVersion(version);
-        settings.setWidth(800);
-        settings.setHeight(600);
-        settings.setScaleAffectedOnResize(false);
-        settings.setManualResizeEnabled(true);
+        settings.setWidth(1600);
+        settings.setHeight(900);
         settings.setFullScreenAllowed(true);
         settings.setDefaultCursor(new CursorInfo("breeze-cursor-32.png", 10, 5));
         settings.setIntroEnabled(false);
@@ -41,10 +36,6 @@ public class GameApp extends GameApplication {
         settings.setApplicationMode(ApplicationMode.DEVELOPER);
         settings.setDeveloperMenuEnabled(true);
         settings.setProfilingEnabled(true);
-    }
-
-    @Override
-    protected void initInput() {
     }
 
     private Player player;
@@ -66,20 +57,7 @@ public class GameApp extends GameApplication {
         for(int x=0; x<viewport.getWidth(); x+=128){
             Entities.spawnWall(new Point2D(x, 200), "wall.png");
         }
-        Entities.spawnEntity(new Point2D(-40, 40), new Mob("tutel.png", new HitBox(BoundingShape.box(64, 64))) {
-            @Override
-            public float getMaxHP() { return 200; }
-
-            @Override
-            public AIComponent getAI() {
-                return new AIComponent() {
-                    @Override
-                    public void onUpdate(double tpf) {
-                        var physics = getPhysics();
-                    }
-                };
-            }
-        });
+        Entities.spawnEntity(new Point2D(-40, 40), new TestMob());
     }
 
     @Override

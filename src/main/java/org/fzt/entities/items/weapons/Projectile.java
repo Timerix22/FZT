@@ -35,7 +35,6 @@ public abstract class Projectile extends Entity implements Physical {
      */
     public void shoot(Point2D velocity){
         _physics.setLinearVelocity(velocity);
-        System.out.println("projectile mass: "+_physics.getBody().getMass());
     }
 
     public PhysicsComponent createPhysics(){
@@ -44,7 +43,7 @@ public abstract class Projectile extends Entity implements Physical {
         bd.setType(BodyType.DYNAMIC);
         bd.setBullet(true);
         var fd = new FixtureDef();
-        fd.setDensity(0.01f);
+        fd.setDensity(0.5f);
         ph.setBodyDef(bd);
         ph.setFixtureDef(fd);
         return ph;
