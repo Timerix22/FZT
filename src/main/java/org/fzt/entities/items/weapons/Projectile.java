@@ -8,6 +8,7 @@ import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import org.fzt.entities.EntityType;
+import org.fzt.entities.LifetimeComponent;
 import org.fzt.entities.physics.Physical;
 import org.fzt.entities.physics.PhysicsComponentBuilder;
 
@@ -31,9 +32,11 @@ public abstract class Projectile extends Entity implements Physical {
     /**
      * Shoots the projectile
      * @param velocity in px/s
+     * @param lifetime time in seconds before projectile self-destructs
      */
-    public void shoot(Point2D velocity){
+    public void shoot(Point2D velocity, double lifetime){
         _physics.setLinearVelocity(velocity);
+        addComponent(new LifetimeComponent(lifetime));
     }
 
     public PhysicsComponent createPhysics(){

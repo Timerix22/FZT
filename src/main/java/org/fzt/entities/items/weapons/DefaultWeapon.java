@@ -36,6 +36,6 @@ public class DefaultWeapon implements Weapon {
             public float getBaseDamage() {return 10;}
         };
         Entities.spawnEntity(pos, projectile);
-        projectile.shoot(destination.normalize().multiply(10*64));
+        projectile.shoot(destination.normalize().multiply(10*64), 5);
     }
 }
