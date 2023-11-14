@@ -17,7 +17,7 @@ public interface Mortal {
      * @param damage amount of damage. Set negative to heal.
      * @return result entity health points
      */
-    float applyDamage(float damage);
+    float dealDamage(float damage);
 
     /**
      * Kills the entity

@@ -25,9 +25,9 @@ public class Player extends CharacterEntity implements Physical {
     public PlayerInventory inventory = new PlayerInventory(16);
 
     public Player() {
-        super(new CharacterStats());
+        super(new CharacterStats(20, 20, 20, 0));
         setType(EntityType.PLAYER);
-        getViewComponent().addChild(Assets.loadTexture64("player.png"));
+        getViewComponent().addChild(Assets.loadTexture64("player_stand.png"));
         // hitbox smaller than tile size to be able to go through 64px holes
         getBoundingBoxComponent().addHitBox(new HitBox(BoundingShape.box(56, 56)));
         addComponent(new CollidableComponent(true));
@@ -62,6 +62,18 @@ public class Player extends CharacterEntity implements Physical {
         return CharacterStats.sum(getBaseStats(), equippedWeapon.getStats(), inventory.getStatsSum());
     }
 
+    @Override
+    public float dealDamage(float damage) {
+        var hp = super.dealDamage(damage);
+        System.out.println("player receives "+damage+" damage");
+        return hp;
+    }
+
+    @Override
+    public void kill() {
+        super.kill();
+        // TODO game over
+    }
 
     /**
      * @return point where player projectiles should spawn

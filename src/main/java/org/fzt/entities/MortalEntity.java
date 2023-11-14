@@ -11,7 +11,7 @@ public abstract class MortalEntity extends Entity implements Mortal {
     }
 
     @Override
-    public float applyDamage(float damage) {
+    public float dealDamage(float damage) {
         _hp -= damage;
         if(_hp < 0) {
             kill();

@@ -11,12 +11,13 @@ import org.fzt.entities.player.Player;
  * Contains functions to deal with entities
  */
 public class Entities {
-    public static Entity spawnEntity(Point2D pos, Entity e) {
+
+    public static <TEntity extends Entity> TEntity spawnEntity(Point2D pos, TEntity e) {
         e.setPosition(pos);
         FXGL.getGameWorld().addEntity(e);
         return e;
     }
-    
+
     public static Entity spawnPlayer(Point2D pos){
         return spawnEntity(pos, new Player());
     }

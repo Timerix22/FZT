@@ -1,5 +1,6 @@
 package org.fzt.entities.npc;
 
+import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
@@ -8,6 +9,7 @@ import javafx.scene.Node;
 import org.fzt.entities.CharacterEntity;
 import org.fzt.entities.CharacterStats;
 import org.fzt.entities.EntityType;
+import org.fzt.entities.Mortal;
 import org.fzt.entities.physics.Physical;
 import org.fzt.entities.physics.PhysicsComponentBuilder;
 import org.fzt.entities.physics.SurfaceFriction;
@@ -53,5 +55,11 @@ public abstract class Mob extends CharacterEntity implements NPC, Physical {
 
     public double getAgroRadius() {
         return _agroRadius;
+    }
+
+    public void attack(Entity target) {
+        if(target instanceof Mortal targetMortal && target.getCenter().subtract(getCenter()).magnitude() < 96) {
+            targetMortal.dealDamage(getStats().getMiliDamage());
+        }
     }
 }

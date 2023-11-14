@@ -13,9 +13,10 @@ import org.fzt.entities.Entities;
 import org.fzt.entities.EntityType;
 import org.fzt.entities.items.weapons.Projectile;
 import org.fzt.entities.npc.NPC;
-import org.fzt.entities.npc.TestMob;
+import org.fzt.entities.npc.RatkinMob;
 import org.fzt.entities.player.Player;
 import org.fzt.entities.player.PlayerController;
+import org.fzt.level.SpawnerComponent;
 
 /**
  * Main class with entry point and game logic
@@ -47,17 +48,21 @@ public class GameApp extends GameApplication {
         var scene = FXGL.getGameScene();
         var viewport = scene.getViewport();
 
-        scene.setBackgroundColor(Color.BLACK);
-
-        player = (Player) Entities.spawnPlayer(new Point2D(0, 0));
-        playerController = player.getComponent(PlayerController.class);
-
-        viewport.bindToEntity(player, viewport.getWidth()/2, viewport.getHeight()/2);
+        scene.setBackgroundColor(Color.rgb(40,40,40));
 
         for(int x=0; x<viewport.getWidth(); x+=128){
             Entities.spawnWall(new Point2D(x, 200), "wall.png");
         }
-        Entities.spawnEntity(new Point2D(-40, 40), new TestMob());
+
+        FXGL.entityBuilder()
+                .at(new Point2D(400, -100))
+                .with(new SpawnerComponent(5, 200, 1,
+                        (Point2D pos) -> Entities.spawnEntity(pos, new RatkinMob())))
+                .buildAndAttach();
+
+        player = (Player) Entities.spawnPlayer(new Point2D(0, 0));
+        playerController = player.getComponent(PlayerController.class);
+        viewport.bindToEntity(player, viewport.getWidth()/2, viewport.getHeight()/2);
     }
 
     @Override
@@ -75,7 +80,7 @@ public class GameApp extends GameApplication {
             protected void onCollisionBegin(Entity _prj, Entity _npc) {
                 Projectile prj = (Projectile)_prj;
                 NPC npc = (NPC)_npc;
-                npc.applyDamage(prj.getBaseDamage());
+                npc.dealDamage(prj.getBaseDamage());
                 prj.removeFromWorld();
             }
         });

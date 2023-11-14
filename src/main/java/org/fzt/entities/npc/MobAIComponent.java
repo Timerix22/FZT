@@ -30,6 +30,11 @@ public class MobAIComponent extends AIComponent {
     @Override
     public void onUpdate(double tpf) {
         super.onUpdate(tpf);
+
+        if(_targetEntity != null){
+            attack(_targetEntity);
+        }
+
         // stops the mob if it has no target to move
         if (_targetPoint == null) {
             return;
@@ -57,6 +62,6 @@ public class MobAIComponent extends AIComponent {
 
     @Override
     public void attack(Entity target) {
-
+        _mob.attack(target);
     }
 }
