@@ -19,8 +19,8 @@ public abstract class Mob extends CharacterEntity implements NPC, Physical {
     protected double _agroRadius;
     AIComponent _ai;
 
-    public Mob(Node view, HitBox hitBox, double agroRadius) {
-        super(new CharacterStats());
+    public Mob(CharacterStats baseStats,Node view, HitBox hitBox, double agroRadius) {
+        super(baseStats);
         _agroRadius = agroRadius;
         setType(EntityType.NPC);
         addComponent(getAI());
@@ -57,7 +57,15 @@ public abstract class Mob extends CharacterEntity implements NPC, Physical {
         return _agroRadius;
     }
 
+    // it will not work if < then 1/fps
+    public float cooldown = 0.2f;
+
+    long lastAttackTime = 0;
     public void attack(Entity target) {
+        long now = System.nanoTime();
+        // just returns if cooldown hasn't ended
+        if(now < lastAttackTime + (long) (cooldown*1000_000_000))
+            return;
         if(target instanceof Mortal targetMortal && target.getCenter().subtract(getCenter()).magnitude() < 96) {
             targetMortal.dealDamage(getStats().getMiliDamage());
         }

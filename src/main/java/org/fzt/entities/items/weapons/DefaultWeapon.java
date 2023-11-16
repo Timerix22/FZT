@@ -19,16 +19,16 @@ public class DefaultWeapon implements Weapon {
     // it will not work if < then 1/fps
     public float cooldown = 0.2f;
 
-    long lastShotTime = 0;
+    long lastAttackTime = 0;
 
     @Override
     public void attack(Point2D pos, Point2D destination) {
         long now = System.nanoTime();
         // just returns if cooldown hasn't ended
-        if(now < lastShotTime + (long) (cooldown*1000_000_000))
+        if(now < lastAttackTime + (long) (cooldown*1000_000_000))
             return;
 
-        lastShotTime = now;
+        lastAttackTime = now;
         var projectile = new Projectile(
                 Assets.loadTexture("default_projectile.png", 40, 40),
                 new HitBox(BoundingShape.circle(20f))){
