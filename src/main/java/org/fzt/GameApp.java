@@ -8,7 +8,6 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.geometry.Point2D;
-import javafx.scene.paint.Color;
 import org.fzt.entities.Entities;
 import org.fzt.entities.EntityType;
 import org.fzt.entities.items.weapons.Projectile;
@@ -48,14 +47,23 @@ public class GameApp extends GameApplication {
         var scene = FXGL.getGameScene();
         var viewport = scene.getViewport();
 
-        scene.setBackgroundColor(Color.rgb(40,40,40));
+//        scene.setBackgroundColor(Color.rgb(40,40,40));
 
+        for(int x = -10240; x<10240; x+=512)
+            for(int y = -10240; y<10240; y+=512)
+                Entities.spawnFloor(new Point2D(x, y), "floor-512.png");
         for(int x=0; x<viewport.getWidth(); x+=128){
             Entities.spawnWall(new Point2D(x, 200), "wall.png");
         }
 
         FXGL.entityBuilder()
                 .at(new Point2D(400, -100))
+                .with(new SpawnerComponent(5, 200, 1,
+                        (Point2D pos) -> Entities.spawnEntity(pos, new RatkinMob())))
+                .buildAndAttach();
+
+        FXGL.entityBuilder()
+                .at(new Point2D(-400, 200))
                 .with(new SpawnerComponent(5, 200, 1,
                         (Point2D pos) -> Entities.spawnEntity(pos, new RatkinMob())))
                 .buildAndAttach();
