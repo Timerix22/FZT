@@ -10,7 +10,6 @@ public class TestMob extends Mob {
     public TestMob() {
         super(new CharacterStats(),
                 Assets.loadTexture64("tutel.png"),
-                new HitBox(BoundingShape.box(64, 64)),
-                64 * 8);
+                new HitBox(BoundingShape.box(64, 64)));
     }
 }

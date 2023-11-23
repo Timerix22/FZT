@@ -1,11 +1,7 @@
 package org.fzt.entities.npc;
 
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.physics.BoundingShape;
-import com.almasb.fxgl.physics.HitBox;
-import com.almasb.fxgl.physics.SensorCollisionHandler;
 import javafx.geometry.Point2D;
-import org.fzt.entities.EntityType;
 import org.jetbrains.annotations.Nullable;
 
 public class MobAIComponent extends AIComponent {
@@ -15,16 +11,6 @@ public class MobAIComponent extends AIComponent {
 
     public MobAIComponent(Mob mob) {
         _mob = mob;
-        var agroRadius = _mob.getAgroRadius();
-        _mob._physics.addSensor(new HitBox(BoundingShape.Companion.circle(agroRadius)), new SensorCollisionHandler() {
-            @Override
-            protected void onCollisionBegin(Entity other) {
-                if (other.getType().toString().equals(EntityType.PLAYER.toString())) {
-                    System.out.println("Player enters agro radius");
-                    follow(other, other.getWidth() / 2, agroRadius);
-                }
-            }
-        });
     }
 
     @Override

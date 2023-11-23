@@ -10,7 +10,6 @@ public class RatkinMob extends Mob {
     public RatkinMob() {
         super(new CharacterStats(),
                 Assets.loadTexture64("ratkin.png"),
-                new HitBox(BoundingShape.box(64, 64)),
-                64 * 20);
+                new HitBox(BoundingShape.box(64, 64)));
     }
 }

@@ -16,12 +16,10 @@ import org.fzt.entities.physics.SurfaceFriction;
 
 public abstract class Mob extends CharacterEntity implements NPC, Physical {
     protected final PhysicsComponent _physics = createPhysics();
-    protected double _agroRadius;
     AIComponent _ai;
 
-    public Mob(CharacterStats baseStats,Node view, HitBox hitBox, double agroRadius) {
+    public Mob(CharacterStats baseStats,Node view, HitBox hitBox) {
         super(baseStats);
-        _agroRadius = agroRadius;
         setType(EntityType.NPC);
         addComponent(getAI());
         addComponent(new CollidableComponent(true));
@@ -51,10 +49,6 @@ public abstract class Mob extends CharacterEntity implements NPC, Physical {
         if (_ai == null)
             _ai = new MobAIComponent(this);
         return _ai;
-    }
-
-    public double getAgroRadius() {
-        return _agroRadius;
     }
 
     // it will not work if < then 1/fps

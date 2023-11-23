@@ -8,6 +8,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.text.Text;
 import org.fzt.entities.Entities;
 import org.fzt.entities.EntityType;
 import org.fzt.entities.items.weapons.Projectile;
@@ -47,7 +48,9 @@ public class GameApp extends GameApplication {
         var scene = FXGL.getGameScene();
         var viewport = scene.getViewport();
 
-//        scene.setBackgroundColor(Color.rgb(40,40,40));
+        player = (Player) Entities.spawnPlayer(new Point2D(0, 0));
+        playerController = player.getComponent(PlayerController.class);
+        viewport.bindToEntity(player, viewport.getWidth()/2, viewport.getHeight()/2);
 
         for(int x = -10240; x<10240; x+=512)
             for(int y = -10240; y<10240; y+=512)
@@ -67,10 +70,6 @@ public class GameApp extends GameApplication {
                 .with(new SpawnerComponent(5, 200, 1,
                         (Point2D pos) -> Entities.spawnEntity(pos, new RatkinMob())))
                 .buildAndAttach();
-
-        player = (Player) Entities.spawnPlayer(new Point2D(0, 0));
-        playerController = player.getComponent(PlayerController.class);
-        viewport.bindToEntity(player, viewport.getWidth()/2, viewport.getHeight()/2);
     }
 
     @Override
@@ -96,7 +95,8 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initUI() {
-
+        Text t = new Text("aaa");
+        FXGL.addUINode(t);
     }
 
     public static void main(String[] args) {
