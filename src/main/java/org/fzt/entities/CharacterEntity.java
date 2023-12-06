@@ -25,10 +25,9 @@ public abstract class CharacterEntity extends MortalEntity implements Character 
     public float getMaxHP() {
         // MortalEntity calls getMaxHP() in field initialization before _base_stats are initialized,
         // so getMaxHP has to return 0 to not cause NullPointerException in MortalEntity.
-        // Proper value of MaxHP will be returned in the first onUpdate() iteration when the game starts.
         if (_base_stats == null)
             return 0;
         var s = getStats();
-        return _base_hp * (1 + s.constitution / 10 + s.strength / 40);
+        return _base_hp * (1 + s.constitution / 20 + s.strength / 80);
     }
 }

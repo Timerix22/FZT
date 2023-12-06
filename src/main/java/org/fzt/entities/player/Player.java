@@ -12,6 +12,7 @@ import org.fzt.Assets;
 import org.fzt.entities.CharacterEntity;
 import org.fzt.entities.CharacterStats;
 import org.fzt.entities.EntityType;
+import org.fzt.entities.items.Item;
 import org.fzt.entities.items.weapons.DefaultWeapon;
 import org.fzt.entities.items.weapons.Weapon;
 import org.fzt.entities.npc.Mob;
@@ -23,14 +24,14 @@ public class Player extends CharacterEntity implements Physical {
     private final PhysicsComponent _physics = createPhysics();
 
     @Nullable
-    public Weapon equippedWeapon = new DefaultWeapon();
+    public Weapon equippedWeapon = new DefaultWeapon("weapon-default.png", new CharacterStats());
 
     public PlayerInventory inventory = new PlayerInventory(16);
 
-    private double _agroRadius = 64 * 8;
+    private double _agroRadius = 64 * 16;
 
     public Player() {
-        super(new CharacterStats(20, 20, 20, 0));
+        super(new CharacterStats(1, 1, 1, 0));
         setType(EntityType.PLAYER);
         getViewComponent().addChild(Assets.loadTexture64("player_stand.png"));
         // hitbox smaller than tile size to be able to go through 64px holes
@@ -98,5 +99,11 @@ public class Player extends CharacterEntity implements Physical {
      */
     public Point2D getWeaponPos() {
         return getCenter();
+    }
+
+    public void pickUpItem(Item it) throws PlayerInventory.InventoryFullException {
+        inventory.add(it);
+        it.removeFromWorld();
+        it.setRotation(0);
     }
 }

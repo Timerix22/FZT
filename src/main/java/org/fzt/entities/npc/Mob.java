@@ -6,6 +6,7 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import javafx.scene.Node;
+import org.fzt.GameApp;
 import org.fzt.entities.CharacterEntity;
 import org.fzt.entities.CharacterStats;
 import org.fzt.entities.EntityType;
@@ -52,7 +53,7 @@ public abstract class Mob extends CharacterEntity implements NPC, Physical {
     }
 
     // it will not work if < then 1/fps
-    public float cooldown = 0.2f;
+    public float cooldown = 0.4f;
 
     long lastAttackTime = 0;
     public void attack(Entity target) {
@@ -60,8 +61,16 @@ public abstract class Mob extends CharacterEntity implements NPC, Physical {
         // just returns if cooldown hasn't ended
         if(now < lastAttackTime + (long) (cooldown*1000_000_000))
             return;
-        if(target instanceof Mortal targetMortal && target.getCenter().subtract(getCenter()).magnitude() < 96) {
+
+        lastAttackTime = now;
+        if(target instanceof Mortal targetMortal && target.getCenter().subtract(getCenter()).magnitude() < 96)
             targetMortal.dealDamage(getStats().getMiliDamage());
-        }
+    }
+
+    @Override
+    public void kill() {
+        var item = GameApp.itemGenerator.dropRandomItem(getPosition());
+        System.out.println("mob dropped item "+item);
+        super.kill();
     }
 }

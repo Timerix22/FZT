@@ -3,7 +3,7 @@ package org.fzt.entities;
 import com.almasb.fxgl.entity.Entity;
 
 public abstract class MortalEntity extends Entity implements Mortal {
-    float _hp = getMaxHP();
+    protected float _hp = getMaxHP();
 
     @Override
     public float getHP() {
@@ -13,9 +13,9 @@ public abstract class MortalEntity extends Entity implements Mortal {
     @Override
     public float dealDamage(float damage) {
         _hp -= damage;
-        if(_hp < 0) {
+        if(_hp < 0)
             kill();
-        } else {
+        else {
             var maxHP = getMaxHP();
             if(_hp > maxHP)
                 _hp = maxHP;

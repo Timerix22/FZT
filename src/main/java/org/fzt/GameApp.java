@@ -11,6 +11,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.text.Text;
 import org.fzt.entities.Entities;
 import org.fzt.entities.EntityType;
+import org.fzt.entities.items.ItemGenerator;
 import org.fzt.entities.items.weapons.Projectile;
 import org.fzt.entities.npc.NPC;
 import org.fzt.entities.npc.RatkinMob;
@@ -23,6 +24,7 @@ import org.fzt.level.SpawnerComponent;
  */
 public class GameApp extends GameApplication {
     public static final String version = "0.0.1";
+    public static final ItemGenerator itemGenerator = new ItemGenerator();
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -56,18 +58,18 @@ public class GameApp extends GameApplication {
             for(int y = -10240; y<10240; y+=512)
                 Entities.spawnFloor(new Point2D(x, y), "floor-512.png");
         for(int x=0; x<viewport.getWidth(); x+=128){
-            Entities.spawnWall(new Point2D(x, 200), "wall.png");
+            Entities.spawnWall(new Point2D(x, 192), "wall.png");
         }
 
         FXGL.entityBuilder()
-                .at(new Point2D(400, -100))
-                .with(new SpawnerComponent(5, 200, 1,
+                .at(new Point2D(400, -640))
+                .with(new SpawnerComponent(4, 400, 1,
                         (Point2D pos) -> Entities.spawnEntity(pos, new RatkinMob())))
                 .buildAndAttach();
 
         FXGL.entityBuilder()
-                .at(new Point2D(-400, 200))
-                .with(new SpawnerComponent(5, 200, 1,
+                .at(new Point2D(-400, 640))
+                .with(new SpawnerComponent(4, 400, 1,
                         (Point2D pos) -> Entities.spawnEntity(pos, new RatkinMob())))
                 .buildAndAttach();
     }
