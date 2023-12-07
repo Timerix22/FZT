@@ -23,10 +23,10 @@ public class AutoPickUpItemsComponent extends Component {
         Point2D pos = _player.getPosition();
         var nearestEntities = FXGL.getGameScene().getGameWorld()
                 .getEntitiesInRange(
-                        new Rectangle2D(pos.getX() - 32, // corner_x
-                                pos.getY() - 32, // corner_y
-                                128, // width
-                                128)); // height
+                        new Rectangle2D(pos.getX() - 64, // corner_x
+                                pos.getY() - 64, // corner_y
+                                160, // width
+                                160)); // height
         for (final Entity e : nearestEntities) {
             if (e instanceof Item item) {
                 try {

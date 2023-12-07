@@ -8,22 +8,24 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import org.fzt.entities.Entities;
 import org.fzt.entities.EntityType;
+import org.fzt.entities.buildings.Wall;
 import org.fzt.entities.items.ItemGenerator;
 import org.fzt.entities.items.weapons.Projectile;
 import org.fzt.entities.npc.NPC;
 import org.fzt.entities.npc.RatkinMob;
 import org.fzt.entities.player.Player;
-import org.fzt.entities.player.PlayerController;
+import org.fzt.level.LevelBuilder;
 import org.fzt.level.SpawnerComponent;
 
 /**
  * Main class with entry point and game logic
  */
 public class GameApp extends GameApplication {
-    public static final String version = "0.0.1";
+    public static final String version = "0.2.0";
     public static final ItemGenerator itemGenerator = new ItemGenerator();
 
     @Override
@@ -42,31 +44,58 @@ public class GameApp extends GameApplication {
     }
 
     private Player player;
-    private PlayerController playerController;
 
     @Override
     protected void initGame() {
-        var world = FXGL.getGameWorld();
         var scene = FXGL.getGameScene();
         var viewport = scene.getViewport();
 
         player = (Player) Entities.spawnPlayer(new Point2D(0, 0));
-        playerController = player.getComponent(PlayerController.class);
-        viewport.bindToEntity(player, viewport.getWidth()/2, viewport.getHeight()/2);
+        viewport.bindToEntity(player, viewport.getWidth() / 2, viewport.getHeight() / 2);
 
-        for(int x = -10240; x<10240; x+=512)
-            for(int y = -10240; y<10240; y+=512)
+        final int SCENE_SIZE_TILES = 40;
+        final int SCENE_HALFSIZE_PX = SCENE_SIZE_TILES * 64 / 2;
+        viewport.setBounds(-SCENE_HALFSIZE_PX, -SCENE_HALFSIZE_PX, SCENE_HALFSIZE_PX, SCENE_HALFSIZE_PX);
+
+        var levelBuilder = new LevelBuilder();
+        // floor
+        scene.setBackgroundColor(Color.BLACK);
+        for (int x = -SCENE_HALFSIZE_PX; x < SCENE_HALFSIZE_PX; x += 512)
+            for (int y = -SCENE_HALFSIZE_PX; y < SCENE_HALFSIZE_PX; y += 512)
                 Entities.spawnFloor(new Point2D(x, y), "floor-512.png");
-        for(int x=0; x<viewport.getWidth(); x+=128){
-            Entities.spawnWall(new Point2D(x, 192), "wall.png");
-        }
+        // top wall
+        levelBuilder.lineX(()-> new Wall(Assets.loadTexture64("wall.jpg")),
+                -SCENE_HALFSIZE_PX, -SCENE_HALFSIZE_PX, SCENE_SIZE_TILES);
+        // bottom wall
+        levelBuilder.lineX(()-> new Wall(Assets.loadTexture64("wall.jpg")),
+                -SCENE_HALFSIZE_PX, SCENE_HALFSIZE_PX-64, SCENE_SIZE_TILES);
+        // left wall
+        levelBuilder.lineY(()-> new Wall(Assets.loadTexture64("wall.jpg")),
+                -SCENE_HALFSIZE_PX, -SCENE_HALFSIZE_PX+64, SCENE_SIZE_TILES-2);
+        // right wall
+        levelBuilder.lineY(()-> new Wall(Assets.loadTexture64("wall.jpg")),
+                SCENE_HALFSIZE_PX-64, -SCENE_HALFSIZE_PX+64, SCENE_SIZE_TILES-2);
 
+        // columns
+        Point2D[] columnPoints = {
+                new Point2D(-768, -256),
+                new Point2D(-256, -256),
+                new Point2D(256, -256),
+                new Point2D(768, -256),
+                new Point2D(-768, 256),
+                new Point2D(-256, 256),
+                new Point2D(256, 256),
+                new Point2D(768, 256),
+        };
+        for(Point2D pos : columnPoints)
+            Entities.spawnWall(pos, Assets. loadTexture("column.png", 64, 128));
+
+        // spawners
         FXGL.entityBuilder()
                 .at(new Point2D(400, -640))
                 .with(new SpawnerComponent(4, 400, 1,
                         (Point2D pos) -> Entities.spawnEntity(pos, new RatkinMob())))
                 .buildAndAttach();
-
         FXGL.entityBuilder()
                 .at(new Point2D(-400, 640))
                 .with(new SpawnerComponent(4, 400, 1,
@@ -87,8 +116,8 @@ public class GameApp extends GameApplication {
         physics.addCollisionHandler(new CollisionHandler(EntityType.PROJECTILE, EntityType.NPC) {
             @Override
             protected void onCollisionBegin(Entity _prj, Entity _npc) {
-                Projectile prj = (Projectile)_prj;
-                NPC npc = (NPC)_npc;
+                Projectile prj = (Projectile) _prj;
+                NPC npc = (NPC) _npc;
                 npc.dealDamage(prj.getBaseDamage());
                 prj.removeFromWorld();
             }
