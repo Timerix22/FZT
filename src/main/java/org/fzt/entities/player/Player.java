@@ -40,9 +40,12 @@ public class Player extends CharacterEntity implements Physical {
         addComponent(_physics);
         addComponent(new PlayerController(this, _physics));
 
+        // agro radius sensor
         var thisPlayer = this;
-        // agro collider
-        _physics.addSensor(new HitBox(BoundingShape.Companion.circle(_agroRadius)), new SensorCollisionHandler() {
+        var agroHitBox = new HitBox(
+                new Point2D(-_agroRadius+32, -_agroRadius+32),
+                BoundingShape.Companion.circle(_agroRadius));
+        _physics.addSensor(agroHitBox, new SensorCollisionHandler() {
             @Override
             protected void onCollisionBegin(Entity other) {
                 if (other.getType().toString().equals(EntityType.NPC.toString())) {
