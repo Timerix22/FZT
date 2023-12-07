@@ -31,6 +31,7 @@ public class GameApp extends GameApplication {
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setTitle("Forgotten Ziggurat of Tutel");
+        settings.setAppIcon("tutel.png");
         settings.setVersion(version);
         settings.setWidth(1600);
         settings.setHeight(900);
