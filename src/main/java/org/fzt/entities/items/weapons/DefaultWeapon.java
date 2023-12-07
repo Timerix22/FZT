@@ -27,7 +27,7 @@ public class DefaultWeapon extends Weapon {
 
         lastAttackTime = now;
 
-        var projectileTexture = Assets.loadTexture("arrow.png", 40, 40);
+        var projectileTexture = Assets.loadTexture("arrow.png", 64, 64);
         var destNorm = destination.normalize();
         var angle = Math.atan2(destNorm.getX(), destNorm.getY()*-1);
         projectileTexture.setRotate(angle/Math.PI*180);

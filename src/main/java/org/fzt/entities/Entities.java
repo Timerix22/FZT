@@ -3,6 +3,7 @@ package org.fzt.entities;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import org.fzt.Assets;
 import org.fzt.entities.buildings.Floor;
 import org.fzt.entities.buildings.Wall;
@@ -24,7 +25,11 @@ public class Entities {
     }
 
     public static Entity spawnWall(Point2D pos, String texture){
-        return spawnEntity(pos, new Wall(Assets.loadTexture64(texture)));
+        return spawnWall(pos, Assets.loadTexture64(texture));
+    }
+
+    public static Entity spawnWall(Point2D pos, Node view){
+        return spawnEntity(pos, new Wall(view));
     }
 
     public static Entity spawnFloor(Point2D pos, String texture) {

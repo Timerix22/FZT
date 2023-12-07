@@ -2,14 +2,11 @@ package org.fzt.entities.player;
 
 import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.component.Component;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import org.fzt.entities.items.Item;
 
 /**
  * Defines player movement and other interactions with the world
@@ -30,7 +27,7 @@ public class PlayerController extends Component {
 
     public void attack(Point2D destination) {
         if (_player.equippedWeapon != null)
-            _player.equippedWeapon.attack(_player.getWeaponPos(), destination);
+            _player.equippedWeapon.attack(_player.getPosition(), destination);
     }
 
     public void moveLeft() {
@@ -65,25 +62,6 @@ public class PlayerController extends Component {
         FXGL.onKey(KeyCode.S, "Move Down", this::moveDown);
 
         FXGL.onBtn(MouseButton.PRIMARY, "Primary Attack", () ->
-                attack(FXGL.getInput().getVectorToMouse(_player.getWeaponPos())));
-
-        FXGL.onKey(KeyCode.E, "Pick up an item", ()-> {
-            Point2D pos = getEntity().getPosition();
-            var nearestEntities = FXGL.getGameScene().getGameWorld()
-                    .getEntitiesInRange(
-                            new Rectangle2D(pos.getX()-32, // corner_x
-                                    pos.getY()-32, // corner_y
-                                    128, // width
-                                    128)); // height
-            for(final Entity e : nearestEntities){
-                if(e instanceof Item item){
-                    try {
-                        _player.pickUpItem(item);
-                    } catch (PlayerInventory.InventoryFullException ex) {
-                        System.out.println("can't pick up an item, inventory is full!");
-                    }
-                }
-            }
-        });
+            attack(FXGL.getInput().getVectorToMouse(_player.getPosition())));
     }
 }

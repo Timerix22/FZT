@@ -26,7 +26,7 @@ public class Player extends CharacterEntity implements Physical {
     @Nullable
     public Weapon equippedWeapon = new DefaultWeapon("weapon-default.png", new CharacterStats());
 
-    public PlayerInventory inventory = new PlayerInventory(16);
+    public PlayerInventory inventory = new PlayerInventory(9999);
 
     private double _agroRadius = 64 * 16;
 
@@ -39,6 +39,7 @@ public class Player extends CharacterEntity implements Physical {
         addComponent(new CollidableComponent(true));
         addComponent(_physics);
         addComponent(new PlayerController(this, _physics));
+        addComponent(new AutoPickUpItemsComponent(this));
 
         // agro radius sensor
         var thisPlayer = this;
@@ -95,13 +96,6 @@ public class Player extends CharacterEntity implements Physical {
     public void kill() {
         super.kill();
         // TODO game over
-    }
-
-    /**
-     * @return point where player projectiles should spawn
-     */
-    public Point2D getWeaponPos() {
-        return getCenter();
     }
 
     public void pickUpItem(Item it) throws PlayerInventory.InventoryFullException {
