@@ -15,6 +15,8 @@ import org.fzt.entities.physics.Physical;
 import org.fzt.entities.physics.PhysicsComponentBuilder;
 import org.fzt.entities.physics.SurfaceFriction;
 
+import java.util.Random;
+
 public abstract class Mob extends CharacterEntity implements NPC, Physical {
     protected final PhysicsComponent _physics = createPhysics();
     AIComponent _ai;
@@ -67,10 +69,13 @@ public abstract class Mob extends CharacterEntity implements NPC, Physical {
             targetMortal.dealDamage(getStats().getMiliDamage());
     }
 
+    final private Random _rng = new Random();
     @Override
     public void kill() {
-        var item = GameApp.itemGenerator.dropRandomItem(getPosition());
-        System.out.println("mob dropped item "+item);
+        if(_rng.nextInt(0, 3) == 1) {
+            var item = GameApp.itemGenerator.dropRandomItem(getPosition());
+            System.out.println("mob dropped item " + item);
+        }
         super.kill();
     }
 }

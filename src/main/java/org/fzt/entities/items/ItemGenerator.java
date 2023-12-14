@@ -21,10 +21,10 @@ public class ItemGenerator {
 
     private  CharacterStats getRandomStats(){
         return new CharacterStats(
-            rng.nextInt(0, 5),
-            rng.nextInt(0, 5),
-            rng.nextInt(0, 5),
-            rng.nextInt(0, 5));
+            rng.nextInt(0, 25),
+            rng.nextInt(0, 25),
+            rng.nextInt(0, 25),
+            rng.nextInt(0, 25));
     }
 
     public Item dropRandomItem(Point2D position) {

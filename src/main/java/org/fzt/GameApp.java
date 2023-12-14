@@ -9,14 +9,15 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import org.fzt.entities.Entities;
 import org.fzt.entities.EntityType;
 import org.fzt.entities.buildings.Wall;
 import org.fzt.entities.items.ItemGenerator;
 import org.fzt.entities.items.weapons.Projectile;
+import org.fzt.entities.npc.BatMob;
 import org.fzt.entities.npc.NPC;
 import org.fzt.entities.npc.RatkinMob;
+import org.fzt.entities.npc.SlimeMob;
 import org.fzt.entities.player.Player;
 import org.fzt.level.LevelBuilder;
 import org.fzt.level.SpawnerComponent;
@@ -93,14 +94,19 @@ public class GameApp extends GameApplication {
 
         // spawners
         FXGL.entityBuilder()
-                .at(new Point2D(400, -640))
+                .at(new Point2D(512, -512))
                 .with(new SpawnerComponent(4, 400, 1,
                         (Point2D pos) -> Entities.spawnEntity(pos, new RatkinMob())))
                 .buildAndAttach();
         FXGL.entityBuilder()
-                .at(new Point2D(-400, 640))
+                .at(new Point2D(-512, 512))
                 .with(new SpawnerComponent(4, 400, 1,
-                        (Point2D pos) -> Entities.spawnEntity(pos, new RatkinMob())))
+                        (Point2D pos) -> Entities.spawnEntity(pos, new SlimeMob())))
+                .buildAndAttach();
+        FXGL.entityBuilder()
+                .at(new Point2D(512, 512))
+                .with(new SpawnerComponent(4, 400, 1,
+                        (Point2D pos) -> Entities.spawnEntity(pos, new BatMob())))
                 .buildAndAttach();
     }
 
@@ -127,8 +133,12 @@ public class GameApp extends GameApplication {
 
     @Override
     protected void initUI() {
-        Text t = new Text("aaa");
-        FXGL.addUINode(t);
+//        var container = new FlowPane(Orientation.VERTICAL);
+//        container.setTranslateX(400);
+//        container.setTranslateY(400);
+//        container.setBackground(new BackgroundFill(Color.rgb(30, 30, 50), 0, Insets.EMPTY));
+//
+//        FXGL.addUINode(container);
     }
 
     public static void main(String[] args) {
